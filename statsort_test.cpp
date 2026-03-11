@@ -1,16 +1,11 @@
-// test/statsort_test.cpp
+// statsort_test.cpp
 //
 // Copyright (c) Peter Taraba 2025
 // Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt or copy at
-//  https://www.boost.org/LICENSE_1_0.txt)
 //
-// Boost.Test unit tests for boost::algorithm::statsort
+// Unit tests for boost::algorithm::statsort (plain + projection overloads)
 
 #define BOOST_TEST_MODULE statsort
-// Use header-only Boost.Test if available, otherwise fall back to a
-// lightweight hand-rolled harness so the tests compile without a full
-// Boost installation.
 #if __has_include(<boost/test/included/unit_test.hpp>)
 #  include <boost/test/included/unit_test.hpp>
 #  define USING_BOOST_TEST 1
@@ -28,6 +23,7 @@
 #include <array>
 #include <numeric>
 #include <random>
+#include <string>
 #include <vector>
 
 #include <boost/algorithm/statsort.hpp>
@@ -39,7 +35,7 @@ static bool sorted(const std::vector<T>& v) {
     return std::is_sorted(v.begin(), v.end());
 }
 
-// ── correctness tests ─────────────────────────────────────────────────────────
+// ── plain arithmetic tests ────────────────────────────────────────────────────
 
 BOOST_AUTO_TEST_CASE(test_empty) {
     std::vector<double> v;
@@ -115,7 +111,6 @@ BOOST_AUTO_TEST_CASE(test_integer_type) {
     std::uniform_int_distribution<int> dist(-50000, 50000);
     std::vector<int> v(10000);
     std::generate(v.begin(), v.end(), [&]{ return dist(rng); });
-
     auto expected = v;
     std::sort(expected.begin(), expected.end());
     boost::algorithm::statsort(v);
@@ -137,7 +132,6 @@ BOOST_AUTO_TEST_CASE(test_matches_std_sort_large) {
     std::uniform_real_distribution<double> dist(0.0, 1e6);
     std::vector<double> v(100000);
     std::generate(v.begin(), v.end(), [&]{ return dist(rng); });
-
     auto expected = v;
     std::sort(expected.begin(), expected.end());
     boost::algorithm::statsort(v);
@@ -150,10 +144,9 @@ BOOST_AUTO_TEST_CASE(test_iterator_interface) {
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     std::vector<double> v(5000);
     std::generate(v.begin(), v.end(), [&]{ return dist(rng); });
-
     auto expected = v;
     std::sort(expected.begin(), expected.end());
-    boost::algorithm::statsort(v.begin(), v.end()); // iterator overload
+    boost::algorithm::statsort(v.begin(), v.end());
     BOOST_CHECK_EQUAL_COLLECTIONS(v.begin(), v.end(),
                                   expected.begin(), expected.end());
 }
@@ -163,7 +156,6 @@ BOOST_AUTO_TEST_CASE(test_large_n) {
     std::uniform_real_distribution<double> dist(0.0, 1e6);
     std::vector<double> v(500000);
     std::generate(v.begin(), v.end(), [&]{ return dist(rng); });
-
     auto expected = v;
     std::sort(expected.begin(), expected.end());
     boost::algorithm::statsort(v);
@@ -171,7 +163,111 @@ BOOST_AUTO_TEST_CASE(test_large_n) {
                                   expected.begin(), expected.end());
 }
 
-// ── hand-rolled main (only used when Boost.Test is not available) ─────────────
+// ── projection overload tests ─────────────────────────────────────────────────
+
+// Rainer's exact use case from the mailing list
+BOOST_AUTO_TEST_CASE(test_proj_struct_by_int_field) {
+    struct my_complex_type {
+        std::string name;
+        int z;
+    };
+
+    std::vector<my_complex_type> v = {
+        {"charlie", 30}, {"alice", 10}, {"bob", 20}, {"dave", 5}
+    };
+
+    boost::algorithm::statsort(v, [](const my_complex_type& x) { return x.z; });
+
+    BOOST_CHECK(std::is_sorted(v.begin(), v.end(),
+        [](const my_complex_type& a, const my_complex_type& b) {
+            return a.z < b.z;
+        }));
+    BOOST_CHECK_EQUAL(v[0].name, "dave");
+    BOOST_CHECK_EQUAL(v[1].name, "alice");
+    BOOST_CHECK_EQUAL(v[2].name, "bob");
+    BOOST_CHECK_EQUAL(v[3].name, "charlie");
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_struct_by_double_field) {
+    struct Particle { std::string name; double energy; };
+
+    std::vector<Particle> ps = {
+        {"gamma", 9.9}, {"alpha", 1.1}, {"beta", 5.5}
+    };
+
+    boost::algorithm::statsort(ps, [](const Particle& p) { return p.energy; });
+
+    BOOST_CHECK_EQUAL(ps[0].name, "alpha");
+    BOOST_CHECK_EQUAL(ps[1].name, "beta");
+    BOOST_CHECK_EQUAL(ps[2].name, "gamma");
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_member_pointer) {
+    struct Point { int x; int y; };
+    std::vector<Point> pts = { {3, 0}, {1, 0}, {4, 0}, {2, 0} };
+
+    // Member pointer syntax via lambda (member pointers need explicit invoke)
+    boost::algorithm::statsort(pts, [](const Point& p) { return p.x; });
+
+    for (std::size_t i = 0; i + 1 < pts.size(); ++i)
+        BOOST_CHECK(pts[i].x <= pts[i + 1].x);
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_iterator_interface) {
+    struct Item { int id; float score; };
+
+    std::vector<Item> items = { {1, 9.5f}, {2, 3.2f}, {3, 7.1f}, {4, 0.5f} };
+
+    boost::algorithm::statsort(items.begin(), items.end(),
+                               [](const Item& i) { return i.score; });
+
+    BOOST_CHECK_EQUAL(items[0].id, 4);
+    BOOST_CHECK_EQUAL(items[1].id, 2);
+    BOOST_CHECK_EQUAL(items[2].id, 3);
+    BOOST_CHECK_EQUAL(items[3].id, 1);
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_large_uniform) {
+    struct Wrapper { double val; };
+
+    std::mt19937 rng(42);
+    std::uniform_real_distribution<double> dist(0.0, 1e6);
+    std::vector<Wrapper> v(10000);
+    std::generate(v.begin(), v.end(), [&]{ return Wrapper{dist(rng)}; });
+
+    auto expected = v;
+    std::sort(expected.begin(), expected.end(),
+              [](const Wrapper& a, const Wrapper& b) { return a.val < b.val; });
+
+    boost::algorithm::statsort(v, [](const Wrapper& w) { return w.val; });
+
+    for (std::size_t i = 0; i < v.size(); ++i)
+        BOOST_CHECK_EQUAL(v[i].val, expected[i].val);
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_all_keys_equal) {
+    struct S { int key; std::string data; };
+    std::vector<S> v = { {5, "a"}, {5, "b"}, {5, "c"} };
+    boost::algorithm::statsort(v, [](const S& s) { return s.key; });
+    BOOST_CHECK_EQUAL(v.size(), 3u);
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_single_element) {
+    struct S { double x; };
+    std::vector<S> v = { {3.14} };
+    boost::algorithm::statsort(v, [](const S& s) { return s.x; });
+    BOOST_CHECK_EQUAL(v.size(), 1u);
+}
+
+BOOST_AUTO_TEST_CASE(test_proj_negative_keys) {
+    struct S { int key; };
+    std::vector<S> v = { {-5}, {-1}, {-3}, {0}, {-4}, {2} };
+    boost::algorithm::statsort(v, [](const S& s) { return s.key; });
+    BOOST_CHECK(std::is_sorted(v.begin(), v.end(),
+        [](const S& a, const S& b) { return a.key < b.key; }));
+}
+
+// ── hand-rolled main ──────────────────────────────────────────────────────────
 
 #ifndef USING_BOOST_TEST
 int main() {
@@ -179,6 +275,7 @@ int main() {
 
     #define RUN(fn) do { fn(); std::cout << "  [PASS] " #fn "\n"; } while(0)
 
+    // Plain arithmetic tests
     RUN(test_empty);
     RUN(test_single);
     RUN(test_two_elements);
@@ -194,6 +291,16 @@ int main() {
     RUN(test_matches_std_sort_large);
     RUN(test_iterator_interface);
     RUN(test_large_n);
+
+    // Projection overload tests
+    RUN(test_proj_struct_by_int_field);
+    RUN(test_proj_struct_by_double_field);
+    RUN(test_proj_member_pointer);
+    RUN(test_proj_iterator_interface);
+    RUN(test_proj_large_uniform);
+    RUN(test_proj_all_keys_equal);
+    RUN(test_proj_single_element);
+    RUN(test_proj_negative_keys);
 
     std::cout << "\nAll tests passed!\n";
     return 0;
