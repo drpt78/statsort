@@ -1,8 +1,11 @@
 # Boost Vault Submission: `boost::sort::statsort`
 
 **Author:** Peter Taraba & Claude AI
+
 **Date:** March 2026
+
 **ORCID:** https://orcid.org/0000-0002-8199-3723
+
 **Blog:** https://randommathguy.blogspot.com/
 
 ---
