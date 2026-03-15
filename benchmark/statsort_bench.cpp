@@ -85,7 +85,7 @@ void bench_distribution(const std::string& label,
 
 int main(int argc, char* argv[])
 {
-    const std::size_t default_sizes[] = { 100'000, 1'000'000 };
+    const std::size_t default_sizes[] = { 1'000'000, 10'000'000 };
 
     std::vector<std::size_t> sizes;
     for (int i = 1; i < argc; ++i) {
