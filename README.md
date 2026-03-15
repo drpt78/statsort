@@ -63,10 +63,10 @@ Benchmarks were run on GCC -O3, x86-64 Linux, comparing `statsort` against `std:
 
 | Input Size  Distribution | `std::sort` | `statsort` | Speedup |
 |------------------------|------------|-----------|---------|
-| Uniform  n=100000                  |       36.07 ms |       19.40 ms |     1.86x |
-| Gaussian  n=100000                 |       35.71 ms |       19.48 ms |     1.83x |
-| Exponential  n=100000              |       35.58 ms |       19.07 ms |     1.87x |
-| Nearly sorted  n=100000            |       16.29 ms |       18.86 ms |     0.86x |
+| Uniform  n=1000000                 |      148.77 ms |       62.70 ms |     2.37x |
+| Gaussian  n=1000000                |      148.34 ms |       63.34 ms |     2.34x |
+| Exponential  n=1000000             |      148.52 ms |       64.78 ms |     2.29x |
+| Nearly sorted  n=1000000           |       41.39 ms |       41.98 ms |     0.99x |
 
 
 Full methodology and additional benchmarks are available in the accompanying publication:
