@@ -62,10 +62,14 @@ void print_header()
     std::cout
         << "\nbuild: " << __DATE__ << " " << __TIME__
         << "  |  C++" << __cplusplus / 100 - 2000 << "\n\n"
-        << std::left  << std::setw(34) << "Distribution / n"
-        << std::right << std::setw(13) << "std::sort"
-        << std::setw(13) << "statsort"
-        << std::setw(10) << "speedup\n"
+        << std::left  << std::setw(34) << "| Distribution / n"
+        << std::right << std::setw(13) << "| std::sort"
+        << std::setw(13) << "| statsort"
+        << std::setw(13) << "| spreadsort"
+        << std::setw(13) << "| pdqsort"
+        << std::setw(13) << "| spinsort"
+        << std::setw(13) << "| flat_stable_sort"
+        << std::setw(10) << "| speedup\n"
         << std::string(70, '-') << "\n";
 }
 
