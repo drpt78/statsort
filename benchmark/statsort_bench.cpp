@@ -90,6 +90,7 @@ int main(int argc, char* argv[])
     std::vector<std::size_t> sizes;
     for (int i = 1; i < argc; ++i) {
         sizes.push_back(static_cast<std::size_t>(std::atoll(argv[i])));
+        // it's not printing out -> very weird
         std::cout
             << sizes[i-1] << "\n";
     }
