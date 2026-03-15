@@ -18,6 +18,10 @@ the test keeps running even when it should be done. Have to ask Claude why. Do n
 
 see three different runs
 
+## Question for Claude #1
+
+why is he compiling with O3 instead of O2 (Recommended Standard Optimization).
+
 ## Overview & Motivation
 
 Standard sorting algorithms such as `std::sort` operate by comparing elements, achieving O(n log n) average complexity regardless of the data distribution. However, in many real-world applications — scientific computing, financial data processing, signal processing, and simulation pipelines — data is drawn from smooth, well-behaved distributions such as uniform, Gaussian, or exponential.
