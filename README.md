@@ -102,6 +102,22 @@ Run #3 - another weird thing !!!:
 | Exponential  n=1000000             |      166.17 ms |       65.39 ms |     2.54x |
 | Nearly sorted  n=1000000           |       41.27 ms |       41.67 ms |     0.99x |
 
+Run #4
+
+| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
+|------------------------|------------|-----------|---------|
+| Uniform  n=1000000                 |      236.93 ms |       92.27 ms |     2.57x |
+| Gaussian  n=1000000                |      234.95 ms |       92.39 ms |     2.54x |
+| Exponential  n=1000000             |      175.18 ms |       65.23 ms |     2.69x |
+| Nearly sorted  n=1000000           |       41.36 ms |       41.51 ms |     1.00x |
+
+| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
+|------------------------|------------|-----------|---------|
+| Uniform  n=10000000                |     1733.84 ms |      593.49 ms |     2.92x |
+| Gaussian  n=10000000               |     1736.99 ms |      582.94 ms |     2.98x |
+| Exponential  n=10000000            |     1743.59 ms |      595.40 ms |     2.93x |
+| Nearly sorted  n=10000000          |      489.72 ms |      396.52 ms |     1.24x |
+
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 
