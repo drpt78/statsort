@@ -85,7 +85,7 @@ void bench_distribution(const std::string& label,
 
 int main(int argc, char* argv[])
 {
-    const std::size_t default_sizes[] = { 1'000'000 };
+    const std::size_t default_sizes[] = { 1'000'000,  10'000'000};
 
     std::vector<std::size_t> sizes;
     for (int i = 1; i < argc; ++i) {
@@ -141,11 +141,11 @@ int main(int argc, char* argv[])
         }
 
         // Adversarial: spike distribution (triggers imbalance fallback)
-        {
+        /*{
             std::vector<double> v(n, 1.0);
             v.back() = 1e12;   // one extreme outlier
             bench_distribution("Spike (fallback)" + ns, v);
-        }
+        }*/
 
         std::cout << "\n";
     }
