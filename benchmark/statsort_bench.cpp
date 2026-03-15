@@ -74,11 +74,11 @@ void bench_distribution(const std::string& label,
         [](auto& v){ boost::algorithm::statsort(v); }, data);
 
     std::cout
-        << std::left  << std::setw(34) << label
+        << "| " << std::left  << std::setw(34) << label
         << std::right << std::fixed << std::setprecision(2)
-        << std::setw(11) << t_std  << " ms"
-        << std::setw(11) << t_stat << " ms"
-        << std::setw(8)  << std::setprecision(2) << (t_std / t_stat) << "x\n";
+        << " | " <<  std::setw(11) << t_std  << " ms"
+        << " | " <<  std::setw(11) << t_stat << " ms"
+        << " | " <<  std::setw(8)  << std::setprecision(2) << (t_std / t_stat) << "x |\n";
 }
 
 // ── main ───────────────────────────────────────────────────────────────────
