@@ -14,6 +14,8 @@
 
 the test keeps running even when it should be done. Have to ask Claude why. Do not see the problem yet.
 
+there is something wrong with Adversarial
+
 ## WARNING #2
 
 see three different runs
