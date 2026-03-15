@@ -118,8 +118,14 @@ Run #4
 
 | Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
 |------------------------|------------|-----------|---------|---------|---------|---------|---------|
-| Uniform  n=1000000                 |      232.88 ms |       92.85 ms |      108.49 ms |        - ms |        - ms |        - ms |     2.51x |
-| Gaussian  n=1000000                |      186.48 ms |       64.09 ms |       74.20 ms |        - ms |        - ms |        - ms |     2.91x |
+| Uniform  n=1000000                 |      233.36 ms |       90.86 ms |       85.20 ms |        - ms |        - ms |        - ms |     2.57x |
+| Gaussian  n=1000000                |      154.30 ms |       64.83 ms |       55.40 ms |        - ms |        - ms |        - ms |     2.38x |
+| Exponential  n=1000000             |      148.17 ms |       57.30 ms |       54.17 ms |        - ms |        - ms |        - ms |     2.59x |
+| Nearly sorted  n=1000000           |       41.46 ms |       40.32 ms |       35.03 ms |        - ms |        - ms |        - ms |     1.03x |
+| Uniform  n=10000000                |     1715.21 ms |      584.74 ms |      482.90 ms |        - ms |        - ms |        - ms |     2.93x |
+| Gaussian  n=10000000               |     1712.58 ms |      581.03 ms |      657.46 ms |        - ms |        - ms |        - ms |     2.95x |
+| Exponential  n=10000000            |     1724.43 ms |      597.52 ms |      455.59 ms |        - ms |        - ms |        - ms |     2.89x |
+| Nearly sorted  n=10000000          |      493.04 ms |      405.42 ms |      450.32 ms |        - ms |        - ms |        - ms |     1.22x |
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 
