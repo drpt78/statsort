@@ -7,7 +7,7 @@
 // std::sort across several input distributions and sizes.
 //
 // Build (standalone):
-//   g++ -O2 -std=c++17 -I../include -o statsort_bench statsort_bench.cpp
+//   g++ -O3 -std=c++17 -I../include -o statsort_bench statsort_bench.cpp
 //
 // Build (CMake):
 //   cmake -DSTATSORT_BUILD_BENCHMARKS=ON ..
@@ -28,6 +28,10 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <boost/sort/spreadsort/float_sort.hpp>
+#include <boost/sort/pdqsort/pdqsort.hpp>
+#include <boost/sort/sort.hpp>
+
 
 // ── timing helpers ─────────────────────────────────────────────────────────
 
@@ -72,12 +76,24 @@ void bench_distribution(const std::string& label,
         [](auto& v){ std::sort(v.begin(), v.end()); }, data);
     double t_stat = time_median_ms(
         [](auto& v){ boost::algorithm::statsort(v); }, data);
+    double t_boost_spreadsort = time_median_ms(
+        [](auto& v){ boost::sort::spreadsort::float_sort(v.begin(), v.end()); }, data);
+    /*double t_boost_pdqsort = time_median_ms(
+        [](auto& v){ boost::sort::pdqsort::float_sort(v.begin(), v.end()); }, data);*/
+    /*double t_boost_spinsort = time_median_ms(
+        [](auto& v){ boost::sort::spinsort::float_sort(v.begin(), v.end()); }, data);*/
+    /*double t_boost_flat_stable_sort = time_median_ms(
+        [](auto& v){ boost::sort::flat_stable_sort::float_sort(v.begin(), v.end()); }, data);*/
 
     std::cout
         << "| " << std::left  << std::setw(34) << label
         << std::right << std::fixed << std::setprecision(2)
         << " | " <<  std::setw(11) << t_std  << " ms"
         << " | " <<  std::setw(11) << t_stat << " ms"
+        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
+        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
+        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
+        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
         << " | " <<  std::setw(8)  << std::setprecision(2) << (t_std / t_stat) << "x |\n";
 }
 
