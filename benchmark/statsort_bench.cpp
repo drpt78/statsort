@@ -17,7 +17,7 @@
 //   ./statsort_bench            # default: n=1,000,000 and n=10,000,000
 //   ./statsort_bench 500000     # custom n
 
-#include <boost/algorithm/statsort.hpp>
+#include "statsort.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -85,11 +85,15 @@ void bench_distribution(const std::string& label,
 
 int main(int argc, char* argv[])
 {
-    const std::size_t default_sizes[] = { 1'000'000, 10'000'000 };
+    const std::size_t default_sizes[] = { 100'000, 1'000'000 };
 
     std::vector<std::size_t> sizes;
-    for (int i = 1; i < argc; ++i)
+    for (int i = 1; i < argc; ++i) {
         sizes.push_back(static_cast<std::size_t>(std::atoll(argv[i])));
+        std::cout
+            << sizes[i-1] << "\n";
+    }
+
     if (sizes.empty())
         sizes.assign(std::begin(default_sizes), std::end(default_sizes));
 
