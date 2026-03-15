@@ -71,50 +71,35 @@ On adversarial or highly skewed inputs, bucket imbalance can degrade performance
 
 ## Performance Benchmarks
 
-Benchmarks were run on GCC -O3, x86-64 Linux, comparing `statsort` against `std::sort`.
+Benchmarks were run on GCC -O2!!!, x86-64 Linux, comparing `statsort` against `std::sort`.
 
-Run #1:
+Run #1
 
-| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
-|------------------------|------------|-----------|---------|
-| Uniform  n=1000000                 |      148.77 ms |       62.70 ms |     2.37x |
-| Gaussian  n=1000000                |      148.34 ms |       63.34 ms |     2.34x |
-| Exponential  n=1000000             |      148.52 ms |       64.78 ms |     2.29x |
-| Nearly sorted  n=1000000           |       41.39 ms |       41.98 ms |     0.99x |
+| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
+|------------------------|------------|-----------|---------|---------|---------|---------|---------|
+| Uniform  n=1000000                 |      233.36 ms |       90.86 ms |       85.20 ms |        - ms |        - ms |        - ms |     2.57x |
+| Gaussian  n=1000000                |      154.30 ms |       64.83 ms |       55.40 ms |        - ms |        - ms |        - ms |     2.38x |
+| Exponential  n=1000000             |      148.17 ms |       57.30 ms |       54.17 ms |        - ms |        - ms |        - ms |     2.59x |
+| Nearly sorted  n=1000000           |       41.46 ms |       40.32 ms |       35.03 ms |        - ms |        - ms |        - ms |     1.03x |
+| Uniform  n=10000000                |     1715.21 ms |      584.74 ms |      482.90 ms |        - ms |        - ms |        - ms |     2.93x |
+| Gaussian  n=10000000               |     1712.58 ms |      581.03 ms |      657.46 ms |        - ms |        - ms |        - ms |     2.95x |
+| Exponential  n=10000000            |     1724.43 ms |      597.52 ms |      455.59 ms |        - ms |        - ms |        - ms |     2.89x |
+| Nearly sorted  n=10000000          |      493.04 ms |      405.42 ms |      450.32 ms |        - ms |        - ms |        - ms |     1.22x |
 
-Run #2:
+Run #2
 
-| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
-|------------------------|------------|-----------|---------|
-| Uniform  n=1000000                 |      150.12 ms |       63.19 ms |     2.38x |
-| Gaussian  n=1000000                |      149.45 ms |       63.72 ms |     2.35x |
-| Exponential  n=1000000             |      149.95 ms |       64.12 ms |     2.34x |
-| Nearly sorted  n=1000000           |       41.58 ms |       41.76 ms |     1.00x |
+| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
+|------------------------|------------|-----------|---------|---------|---------|---------|---------|
+| Uniform  n=1000000                 |      232.37 ms |       93.22 ms |      104.49 ms |        - ms |        - ms |        - ms |     2.49x |
+| Gaussian  n=1000000                |      154.25 ms |       65.30 ms |       76.83 ms |        - ms |        - ms |        - ms |     2.36x |
+| Exponential  n=1000000             |      148.59 ms |       57.06 ms |       53.50 ms |        - ms |        - ms |        - ms |     2.60x |
+| Nearly sorted  n=1000000           |       41.39 ms |       39.85 ms |       34.29 ms |        - ms |        - ms |        - ms |     1.04x |
+| Uniform  n=10000000                |     1719.47 ms |      586.34 ms |      475.15 ms |        - ms |        - ms |        - ms |     2.93x |
+| Gaussian  n=10000000               |     1723.36 ms |      580.48 ms |      656.83 ms |        - ms |        - ms |        - ms |     2.97x |
+| Exponential  n=10000000            |     1724.78 ms |      595.18 ms |      463.08 ms |        - ms |        - ms |        - ms |     2.90x |
+| Nearly sorted  n=10000000          |      490.34 ms |      400.77 ms |      454.20 ms |        - ms |        - ms |        - ms |     1.22x |
 
-Run #3 - another weird thing !!!:
-
-| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
-|------------------------|------------|-----------|---------|
-| Uniform  n=1000000                 |      235.18 ms |       91.60 ms |     2.57x |
-| Gaussian  n=1000000                |      236.00 ms |       92.23 ms |     2.56x |
-| Exponential  n=1000000             |      166.17 ms |       65.39 ms |     2.54x |
-| Nearly sorted  n=1000000           |       41.27 ms |       41.67 ms |     0.99x |
-
-Run #4
-
-| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
-|------------------------|------------|-----------|---------|
-| Uniform  n=1000000                 |      236.93 ms |       92.27 ms |     2.57x |
-| Gaussian  n=1000000                |      234.95 ms |       92.39 ms |     2.54x |
-| Exponential  n=1000000             |      175.18 ms |       65.23 ms |     2.69x |
-| Nearly sorted  n=1000000           |       41.36 ms |       41.51 ms |     1.00x |
-
-| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
-|------------------------|------------|-----------|---------|
-| Uniform  n=10000000                |     1733.84 ms |      593.49 ms |     2.92x |
-| Gaussian  n=10000000               |     1736.99 ms |      582.94 ms |     2.98x |
-| Exponential  n=10000000            |     1743.59 ms |      595.40 ms |     2.93x |
-| Nearly sorted  n=10000000          |      489.72 ms |      396.52 ms |     1.24x |
+Run #3
 
 | Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
 |------------------------|------------|-----------|---------|---------|---------|---------|---------|
