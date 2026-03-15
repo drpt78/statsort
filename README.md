@@ -61,12 +61,13 @@ On adversarial or highly skewed inputs, bucket imbalance can degrade performance
 
 Benchmarks were run on GCC -O3, x86-64 Linux, comparing `statsort` against `std::sort`.
 
-| Input Size | Distribution | `std::sort` | `statsort` | Speedup |
-|-----------|-------------|------------|-----------|---------|
-| 1,000,000 | Uniform | 431.22 ms | 218.85 ms | **1.97x** |
-| 1,000,000 | Gaussian | 325.34 ms | 145.56 ms | **2.24x** |
-| 1,000,000 | Exponential | 270.05 ms | 146.80 ms | **1.84x** |
-| 1,000,000 | Nearly sorted | 119.51 ms | 105.84 ms | **1.13x** |
+| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
+|------------------------|------------|-----------|---------|
+| Uniform  n=100000                  |       36.07 ms |       19.40 ms |     1.86x |
+| Gaussian  n=100000                 |       35.71 ms |       19.48 ms |     1.83x |
+| Exponential  n=100000              |       35.58 ms |       19.07 ms |     1.87x |
+| Nearly sorted  n=100000            |       16.29 ms |       18.86 ms |     0.86x |
+
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 
