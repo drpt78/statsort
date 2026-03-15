@@ -10,6 +10,10 @@
 
 ---
 
+## WARNING
+
+the test keeps running even when it should be done. Have to ask Claude why. Do not see the problem yet.
+
 ## Overview & Motivation
 
 Standard sorting algorithms such as `std::sort` operate by comparing elements, achieving O(n log n) average complexity regardless of the data distribution. However, in many real-world applications — scientific computing, financial data processing, signal processing, and simulation pipelines — data is drawn from smooth, well-behaved distributions such as uniform, Gaussian, or exponential.
