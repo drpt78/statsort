@@ -10,9 +10,13 @@
 
 ---
 
-## WARNING
+## WARNING #1
 
 the test keeps running even when it should be done. Have to ask Claude why. Do not see the problem yet.
+
+## WARNING #2
+
+see three different runs
 
 ## Overview & Motivation
 
@@ -82,6 +86,15 @@ Run #2:
 | Gaussian  n=1000000                |      149.45 ms |       63.72 ms |     2.35x |
 | Exponential  n=1000000             |      149.95 ms |       64.12 ms |     2.34x |
 | Nearly sorted  n=1000000           |       41.58 ms |       41.76 ms |     1.00x |
+
+Run #3 - another weird thing !!!:
+
+| Input Size  Distribution | `std::sort` | `statsort` | Speedup |
+|------------------------|------------|-----------|---------|
+| Uniform  n=1000000                 |      235.18 ms |       91.60 ms |     2.57x |
+| Gaussian  n=1000000                |      236.00 ms |       92.23 ms |     2.56x |
+| Exponential  n=1000000             |      166.17 ms |       65.39 ms |     2.54x |
+| Nearly sorted  n=1000000           |       41.27 ms |       41.67 ms |     0.99x |
 
 
 Full methodology and additional benchmarks are available in the accompanying publication:
