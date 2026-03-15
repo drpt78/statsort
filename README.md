@@ -116,6 +116,10 @@ Run #4
 | Exponential  n=10000000            |     1743.59 ms |      595.40 ms |     2.93x |
 | Nearly sorted  n=10000000          |      489.72 ms |      396.52 ms |     1.24x |
 
+| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
+|------------------------|------------|-----------|---------|---------|---------|---------|---------|
+| Uniform  n=1000000                 |      232.88 ms |       92.85 ms |      108.49 ms |        - ms |        - ms |        - ms |     2.51x |
+| Gaussian  n=1000000                |      186.48 ms |       64.09 ms |       74.20 ms |        - ms |        - ms |        - ms |     2.91x |
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 
