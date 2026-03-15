@@ -91,9 +91,9 @@ void bench_distribution(const std::string& label,
         << " | " <<  std::setw(11) << t_std  << " ms"
         << " | " <<  std::setw(11) << t_stat << " ms"
         << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
-        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
-        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
-        << " | " <<  std::setw(11) << t_boost_spreadsort << " ms"
+        << " | " <<  std::setw(11) << "- ms" //<< t_boost_pdqsort << " ms"
+        << " | " <<  std::setw(11) << "- ms" //<< t_boost_spinsort << " ms"
+        << " | " <<  std::setw(11) << "- ms" //<< t_boost_flat_stable_sort << " ms"
         << " | " <<  std::setw(8)  << std::setprecision(2) << (t_std / t_stat) << "x |\n";
 }
 
