@@ -7,7 +7,7 @@
 // std::sort across several input distributions and sizes.
 //
 // Build (standalone):
-//   g++ -O3 -std=c++17 -I../include -o statsort_bench statsort_bench.cpp
+//   g++ -O2 -std=c++17 -I../include -o statsort_bench statsort_bench.cpp
 //
 // Build (CMake):
 //   cmake -DSTATSORT_BUILD_BENCHMARKS=ON ..
