@@ -14,6 +14,10 @@
 #include <random>
 #include <vector>
 
+#include <boost/sort/spreadsort/spreadsort.hpp>
+// or
+#include <boost/sort/sort.hpp>
+
 // ── Basic usage ───────────────────────────────────────────────────────────────
 
 void basic_examples()
