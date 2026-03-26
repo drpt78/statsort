@@ -71,17 +71,6 @@ Benchmarks were run on GCC -O2!!!, x86-64 Linux, comparing `statsort` against `s
 
 Run #1
 
-| Distribution / N                |   std::sort  |  statsort    | spreadsort   |  pdqsort     | flat_stable_sort  | speedup |
-| --------------------------------|--------------|--------------|--------------|--------------|--------------|--------------|
-| Uniform    n=100000             |     12.36 ms |      5.24 ms |      4.80 ms |      5.40 ms |     13.35 ms |    2.36x     |
-| Gaussian   n=100000             |     12.34 ms |      5.95 ms |      4.75 ms |      5.45 ms |     13.35 ms |    2.07x     |
-| Exponential n=100000            |     12.48 ms |      6.15 ms |      4.74 ms |      5.39 ms |     13.34 ms |    2.03x     |
-| Uniform    n=1000000            |    148.76 ms |     65.60 ms |     63.99 ms |     61.56 ms |    169.09 ms |    2.27x     |
-| Gaussian   n=1000000            |    149.12 ms |     59.12 ms |     61.53 ms |     63.20 ms |    170.56 ms |    2.52x     |
-| Exponential n=1000000           |    148.60 ms |     66.97 ms |     54.62 ms |     61.85 ms |    170.53 ms |    2.22x     |
-
-Run #2
-
 === Performance comparison ===
 
 | Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
@@ -101,6 +90,26 @@ Run #2
 | Uniform    n=100000000 | 10016.03 ms |3212.13 ms |3333.95 ms |3915.51 ms |12116.38 ms |    3.12x |
 | Gaussian   n=100000000 | 10011.34 ms |3482.98 ms |3241.77 ms |3872.79 ms |12085.62 ms |    2.87x |
 | Exponential n=100000000 | 10029.70 ms |3796.02 ms |3047.21 ms |3897.04 ms |12079.65 ms |    2.64x |
+
+Run #2
+
+| Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
+| --------------------------------|--------------|--------------|--------------|--------------|--------------|--------------|
+| Uniform    n=10000 | 0.51 ms |0.25 ms |0.17 ms |0.23 ms |0.53 ms |    2.05x |
+| Gaussian   n=10000 | 0.52 ms |0.23 ms |0.16 ms |0.24 ms |0.52 ms |    2.29x |
+| Exponential n=10000 | 0.51 ms |0.23 ms |0.17 ms |0.24 ms |0.53 ms |    2.23x |
+| Uniform    n=100000 | 6.79 ms |3.32 ms |2.40 ms |2.73 ms |6.78 ms |    2.05x |
+| Gaussian   n=100000 | 6.80 ms |3.28 ms |2.36 ms |2.73 ms |6.75 ms |    2.07x |
+| Exponential n=100000 | 6.90 ms |3.30 ms |2.34 ms |2.71 ms |6.77 ms |    2.09x |
+| Uniform    n=1000000 | 76.50 ms |48.13 ms |28.65 ms |31.15 ms |85.96 ms |    1.59x |
+| Gaussian   n=1000000 | 76.31 ms |40.46 ms |31.04 ms |31.12 ms |86.02 ms |    1.89x |
+| Exponential n=1000000 | 76.24 ms |36.40 ms |28.90 ms |31.18 ms |86.93 ms |    2.09x |
+| Uniform    n=10000000 | 887.07 ms |297.17 ms |250.75 ms |351.06 ms |1037.03 ms |    2.99x |
+| Gaussian   n=10000000 | 887.87 ms |304.19 ms |330.23 ms |348.29 ms |1037.39 ms |    2.92x |
+| Exponential n=10000000 | 888.01 ms |329.38 ms |238.42 ms |351.19 ms |1037.64 ms |    2.70x |
+| Uniform    n=100000000 | 10176.73 ms |3481.38 ms |3546.61 ms |4031.91 ms |12208.37 ms |    2.92x |
+| Gaussian   n=100000000 | 10200.98 ms |3519.02 ms |3252.36 ms |3853.42 ms |12071.54 ms |    2.90x |
+| Exponential n=100000000 | 10152.12 ms |3763.01 ms |3063.38 ms |3945.33 ms |12154.31 ms |    2.70x |
 
 
 Running 23 test cases...
