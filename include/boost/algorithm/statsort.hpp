@@ -58,6 +58,8 @@
 #ifndef BOOST_ALGORITHM_STATSORT_HPP
 #define BOOST_ALGORITHM_STATSORT_HPP
 
+#include <boost/sort/spreadsort/spreadsort.hpp>
+
 #include <algorithm>    // std::sort, std::min_element, std::max_element, std::copy
 #include <cmath>        // std::sqrt
 #include <cstddef>      // std::size_t
@@ -75,7 +77,7 @@ namespace detail {
 // ── Tuneable constants ─────────────────────────────────────────────────────
 
 /// Buckets smaller than this are sorted by insertion sort.
-static constexpr std::size_t STATSORT_THRESHOLD = 16;
+static constexpr std::size_t STATSORT_THRESHOLD = 1000000;
 
 /// If any single bucket receives more than this fraction of n elements,
 /// the bucket is considered pathologically skewed and falls back to
@@ -132,11 +134,11 @@ void statsort_impl(T* data, std::size_t n,
                    double min_val, double max_val,
                    T* scratch)
 {
-    if (n <= STATSORT_THRESHOLD) { statsort_insertion(data, n); return; }
+    if (n <= STATSORT_THRESHOLD) { boost::sort::spreadsort::spreadsort(data, data + n); return; }
 
     const std::size_t m     = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
     const double      range = max_val - min_val;
-    const double      scale = static_cast<double>(m) / range;
+    const double      scale = static_cast<double>(static_cast<std::size_t>(m)) / range;
 
     // Pass 1 — count elements per bucket
     std::vector<std::size_t> cnt(m, 0);
@@ -184,7 +186,7 @@ void statsort_impl(T* data, std::size_t n,
         const double bmax = min_val + static_cast<double>(b + 1) * range / static_cast<double>(m);
 
         if (bsize <= STATSORT_THRESHOLD)
-            statsort_insertion(scratch + bstart, bsize);
+            boost::sort::spreadsort::spreadsort(scratch + bstart, scratch + bstart + bsize);
         else
             statsort_impl(scratch + bstart, bsize, bmin, bmax, data + bstart);
     }
@@ -211,7 +213,7 @@ void statsort_impl_proj(T* data, std::size_t n,
                         T* scratch,
                         Proj proj)
 {
-    if (n <= STATSORT_THRESHOLD) { statsort_insertion_proj(data, n, proj); return; }
+    if (n <= STATSORT_THRESHOLD) { boost::sort::spreadsort::spreadsort(data, data + n); return; }
 
     const std::size_t m     = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
     const double      range = max_val - min_val;
@@ -264,7 +266,7 @@ void statsort_impl_proj(T* data, std::size_t n,
         const double bmax = min_val + static_cast<double>(b + 1) * range / static_cast<double>(m);
 
         if (bsize <= STATSORT_THRESHOLD)
-            statsort_insertion_proj(scratch + bstart, bsize, proj);
+            boost::sort::spreadsort::spreadsort(scratch + bstart, scratch + bstart + bsize);
         else
             statsort_impl_proj(scratch + bstart, bsize, bmin, bmax, data + bstart, proj);
     }
