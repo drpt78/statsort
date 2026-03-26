@@ -55,14 +55,14 @@ double time_ms(SortFn fn, const std::vector<double>& base, int runs = 5)
 void benchmark()
 {
     std::cout << "=== Performance comparison ===\n\n";
-    std::cout << std::left  << std::setw(32) << "Distribution / N"
-              << std::right << std::setw(12) << "std::sort"
-              << std::setw(12) << "statsort"
-              << std::setw(14) << "spreadsort"
-              << std::setw(12) << "pdqsort"
-              << std::setw(18) << "flat_stable_sort"
-              << std::setw(10) << "speedup\n"
-              << std::string(110, '-') << "\n";
+    std::cout << std::left  << std::setw(3) << "| Distribution / N"
+              << std::right << std::setw(12) << "| std::sort"
+              << std::setw(12) << "| statsort"
+              << std::setw(14) << "| spreadsort"
+              << std::setw(12) << "| pdqsort"
+              << std::setw(18) << "| flat_stable_sort"
+              << std::setw(10) << "| speedup | \n"
+              << std::string(55, '-') << "\n";
 
     auto print_row = [&](const std::string& label,
                          const std::vector<double>& base) {
@@ -71,14 +71,14 @@ void benchmark()
         double t_spreadsort      = time_ms([](auto& v){ boost::sort::spreadsort::spreadsort(v.begin(), v.end()); }, base);
         double t_pdqsort         = time_ms([](auto& v){ boost::sort::pdqsort(v.begin(), v.end()); }, base);
         double t_flat_stable_sort = time_ms([](auto& v){ boost::sort::flat_stable_sort(v.begin(), v.end()); }, base);
-        std::cout << std::left  << std::setw(32) << label
+        std::cout << std::left  << std::setw(2) << "| " << label << " | "
                   << std::right << std::fixed << std::setprecision(2)
-                  << std::setw(10) << t_std             << " ms |"
-                  << std::setw(10) << t_stat            << " ms |"
-                  << std::setw(10) << t_spreadsort      << " ms |"
-                  << std::setw(10) << t_pdqsort         << " ms |"
-                  << std::setw(10) << t_flat_stable_sort << " ms |"
-                  << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x\n";
+                  << std::setw(3) << t_std             << " ms |"
+                  << std::setw(3) << t_stat            << " ms |"
+                  << std::setw(3) << t_spreadsort      << " ms |"
+                  << std::setw(3) << t_pdqsort         << " ms |"
+                  << std::setw(3) << t_flat_stable_sort << " ms |"
+                  << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x |\n";
     };
 
     for (std::size_t n : {100000UL, 1000000UL}) {
