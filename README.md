@@ -14,10 +14,6 @@
 
 there is something wrong with Adversarial
 
-## WARNING #2
-
-see all the runs
-
 ## Question for Claude #1
 
 why is he compiling with O3 instead of O2 (Recommended Standard Optimization).
