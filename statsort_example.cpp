@@ -62,7 +62,7 @@ void benchmark()
               << std::setw(12) << "| pdqsort"
               << std::setw(18) << "| flat_stable_sort"
               << std::setw(10) << "| speedup | \n"
-              << std::string(55, '-') << "\n";
+              << std::string(90, '-') << "\n";
 
     auto print_row = [&](const std::string& label,
                          const std::vector<double>& base) {
@@ -81,7 +81,7 @@ void benchmark()
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x |\n";
     };
 
-    for (std::size_t n : {100000UL, 1000000UL}) {
+    for (std::size_t n : {100000UL, 1000000UL, 10000000UL}) {
         std::mt19937 rng(42);
         std::string ns = " n=" + std::to_string(n);
 
