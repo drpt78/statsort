@@ -70,6 +70,7 @@ void benchmark()
     std::cout << std::left  << std::setw(32) << "Distribution / N"
               << std::right << std::setw(12) << "std::sort"
               << std::setw(12) << "statsort"
+              << std::setw(12) << "spreadsort"
               << std::setw(10) << "speedup\n"
               << std::string(66, '-') << "\n";
 
@@ -77,10 +78,13 @@ void benchmark()
                          const std::vector<double>& base) {
         double t_std  = time_ms([](auto& v){ std::sort(v.begin(), v.end()); }, base);
         double t_stat = time_ms([](auto& v){ boost::algorithm::statsort(v); }, base);
+        double t_spreadsort = time_ms([](auto& v){ boost::sort::spreadsort::spreadsort(v.begin(), v.end()); }, base);
+
         std::cout << std::left  << std::setw(32) << label
                   << std::right << std::fixed << std::setprecision(2)
                   << std::setw(10) << t_std  << " ms"
                   << std::setw(10) << t_stat << " ms"
+                  << std::setw(10) << t_spreadsort << " ms"
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x\n";
     };
 
