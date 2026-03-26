@@ -75,42 +75,16 @@ Benchmarks were run on GCC -O2!!!, x86-64 Linux, comparing `statsort` against `s
 
 Run #1
 
-| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
-|------------------------|------------|-----------|---------|---------|---------|---------|---------|
-| Uniform  n=1000000                 |      233.36 ms |       90.86 ms |       85.20 ms |        - ms |        - ms |        - ms |     2.57x |
-| Gaussian  n=1000000                |      154.30 ms |       64.83 ms |       55.40 ms |        - ms |        - ms |        - ms |     2.38x |
-| Exponential  n=1000000             |      148.17 ms |       57.30 ms |       54.17 ms |        - ms |        - ms |        - ms |     2.59x |
-| Nearly sorted  n=1000000           |       41.46 ms |       40.32 ms |       35.03 ms |        - ms |        - ms |        - ms |     1.03x |
-| Uniform  n=10000000                |     1715.21 ms |      584.74 ms |      482.90 ms |        - ms |        - ms |        - ms |     2.93x |
-| Gaussian  n=10000000               |     1712.58 ms |      581.03 ms |      657.46 ms |        - ms |        - ms |        - ms |     2.95x |
-| Exponential  n=10000000            |     1724.43 ms |      597.52 ms |      455.59 ms |        - ms |        - ms |        - ms |     2.89x |
-| Nearly sorted  n=10000000          |      493.04 ms |      405.42 ms |      450.32 ms |        - ms |        - ms |        - ms |     1.22x |
+| Distribution / N                |   std::sort  |  statsort    | spreadsort   |  pdqsort     | flat_stable_sort  | speedup |
+| --------------------------------|--------------|--------------|--------------|--------------|--------------|--------------|
+| Uniform    n=100000             |     12.36 ms |      5.24 ms |      4.80 ms |      5.40 ms |     13.35 ms |    2.36x     |
+| Gaussian   n=100000             |     12.34 ms |      5.95 ms |      4.75 ms |      5.45 ms |     13.35 ms |    2.07x     |
+| Exponential n=100000            |     12.48 ms |      6.15 ms |      4.74 ms |      5.39 ms |     13.34 ms |    2.03x     |
+| Uniform    n=1000000            |    148.76 ms |     65.60 ms |     63.99 ms |     61.56 ms |    169.09 ms |    2.27x     |
+| Gaussian   n=1000000            |    149.12 ms |     59.12 ms |     61.53 ms |     63.20 ms |    170.56 ms |    2.52x     |
+| Exponential n=1000000           |    148.60 ms |     66.97 ms |     54.62 ms |     61.85 ms |    170.53 ms |    2.22x     |
 
-Run #2
-
-| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
-|------------------------|------------|-----------|---------|---------|---------|---------|---------|
-| Uniform  n=1000000                 |      232.37 ms |       93.22 ms |      104.49 ms |        - ms |        - ms |        - ms |     2.49x |
-| Gaussian  n=1000000                |      154.25 ms |       65.30 ms |       76.83 ms |        - ms |        - ms |        - ms |     2.36x |
-| Exponential  n=1000000             |      148.59 ms |       57.06 ms |       53.50 ms |        - ms |        - ms |        - ms |     2.60x |
-| Nearly sorted  n=1000000           |       41.39 ms |       39.85 ms |       34.29 ms |        - ms |        - ms |        - ms |     1.04x |
-| Uniform  n=10000000                |     1719.47 ms |      586.34 ms |      475.15 ms |        - ms |        - ms |        - ms |     2.93x |
-| Gaussian  n=10000000               |     1723.36 ms |      580.48 ms |      656.83 ms |        - ms |        - ms |        - ms |     2.97x |
-| Exponential  n=10000000            |     1724.78 ms |      595.18 ms |      463.08 ms |        - ms |        - ms |        - ms |     2.90x |
-| Nearly sorted  n=10000000          |      490.34 ms |      400.77 ms |      454.20 ms |        - ms |        - ms |        - ms |     1.22x |
-
-Run #3
-
-| Distribution / n                  | std::sort   | statsort | spreadsort    | pdqsort   | spinsort| flat_stable_sort| speedup
-|------------------------|------------|-----------|---------|---------|---------|---------|---------|
-| Uniform  n=1000000                 |      233.36 ms |       90.86 ms |       85.20 ms |        - ms |        - ms |        - ms |     2.57x |
-| Gaussian  n=1000000                |      154.30 ms |       64.83 ms |       55.40 ms |        - ms |        - ms |        - ms |     2.38x |
-| Exponential  n=1000000             |      148.17 ms |       57.30 ms |       54.17 ms |        - ms |        - ms |        - ms |     2.59x |
-| Nearly sorted  n=1000000           |       41.46 ms |       40.32 ms |       35.03 ms |        - ms |        - ms |        - ms |     1.03x |
-| Uniform  n=10000000                |     1715.21 ms |      584.74 ms |      482.90 ms |        - ms |        - ms |        - ms |     2.93x |
-| Gaussian  n=10000000               |     1712.58 ms |      581.03 ms |      657.46 ms |        - ms |        - ms |        - ms |     2.95x |
-| Exponential  n=10000000            |     1724.43 ms |      597.52 ms |      455.59 ms |        - ms |        - ms |        - ms |     2.89x |
-| Nearly sorted  n=10000000          |      493.04 ms |      405.42 ms |      450.32 ms |        - ms |        - ms |        - ms |     1.22x |
+Running 23 test cases...
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 

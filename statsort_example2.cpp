@@ -73,11 +73,11 @@ void benchmark()
         double t_flat_stable_sort = time_ms([](auto& v){ boost::sort::flat_stable_sort(v.begin(), v.end()); }, base);
         std::cout << std::left  << std::setw(32) << label
                   << std::right << std::fixed << std::setprecision(2)
-                  << std::setw(10) << t_std             << " ms"
-                  << std::setw(10) << t_stat            << " ms"
-                  << std::setw(10) << t_spreadsort      << " ms"
-                  << std::setw(10) << t_pdqsort         << " ms"
-                  << std::setw(10) << t_flat_stable_sort << " ms"
+                  << std::setw(10) << t_std             << " ms |"
+                  << std::setw(10) << t_stat            << " ms |"
+                  << std::setw(10) << t_spreadsort      << " ms |"
+                  << std::setw(10) << t_pdqsort         << " ms |"
+                  << std::setw(10) << t_flat_stable_sort << " ms |"
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x\n";
     };
 
