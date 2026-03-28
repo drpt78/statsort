@@ -97,13 +97,11 @@ Run #1
 
 
 ----- test -----
-Running 23 test cases...
+Running 23
+
+test cases...
 
 *** No errors detected
-
-
-
-Running 23 test cases...
 
 Full methodology and additional benchmarks are available in the accompanying publication:
 
