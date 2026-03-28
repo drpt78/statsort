@@ -71,13 +71,16 @@ void benchmark()
         double t_spreadsort      = time_ms([](auto& v){ boost::sort::spreadsort::spreadsort(v.begin(), v.end()); }, base);
         double t_pdqsort         = time_ms([](auto& v){ boost::sort::pdqsort(v.begin(), v.end()); }, base);
         double t_flat_stable_sort = time_ms([](auto& v){ boost::sort::flat_stable_sort(v.begin(), v.end()); }, base);
+
+        double t_min = std::min(t_std, std::min(t_stat, std::min(t_spreadsort, std::min(t_pdqsort, t_flat_stable_sort))));
+
         std::cout << std::left  << std::setw(2) << "| " << label << " | "
                   << std::right << std::fixed << std::setprecision(2)
-                  << std::setw(3) << t_std             << " ms |"
-                  << std::setw(3) << t_stat            << " ms |"
-                  << std::setw(3) << t_spreadsort      << " ms |"
-                  << std::setw(3) << t_pdqsort         << " ms |"
-                  << std::setw(3) << t_flat_stable_sort << " ms |"
+                  << ((t_std == t_min) ? "**" : "") << std::setw(3) << t_std << ((t_std == t_min) ? "**" : "") << " ms |"
+                  << ((t_stat == t_min) ? "**" : "") << std::setw(3) << t_stat << ((t_stat == t_min) ? "**" : "") << " ms |"
+                  << ((t_spreadsort == t_min) ? "**" : "") << std::setw(3) << t_spreadsort << ((t_spreadsort == t_min) ? "**" : "") << " ms |"
+                  << ((t_pdqsort == t_min) ? "**" : "") << std::setw(3) << t_pdqsort << ((t_pdqsort == t_min) ? "**" : "") << " ms |"
+                  << ((t_flat_stable_sort == t_min) ? "**" : "") << std::setw(3) << t_flat_stable_sort << ((t_flat_stable_sort == t_min) ? "**" : "") << " ms |"
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x |\n";
     };
 
@@ -98,7 +101,7 @@ void benchmark()
           std::vector<double> v(n); std::generate(v.begin(),v.end(),[&]{return d(rng);});
           print_row("Exponential" + ns, v); }
 
-        std::cout << "\n";
+        std::cout << "|---|---|---|---|---|---|---|\n";
     }
 }
 
