@@ -18,11 +18,9 @@
 //   1. Find min and max of the input range — O(n).
 //   2. Classify each element into one of sqrt(n) buckets by linear
 //      interpolation of its value into [min, max] — O(n).
-//   3. Recurse into each bucket using the same algorithm.
-//   4. If the largest bucket holds more than IMBALANCE_RATIO of n,
-//      fall back to std::sort for that bucket (adversarial-input guard).
-//   5. Fall back to insertion sort when bucket size <= THRESHOLD (default 16).
-//   6. Reassemble buckets in order.
+//   3. Recursively sort each bucket by the same algorithm.
+//   4. Fall back to std::sort when bucket size <= threshold (default: 16).
+//   5. Reassemble buckets in order.
 //
 // REQUIREMENTS
 //   - C++17 or later
@@ -58,8 +56,6 @@
 #ifndef BOOST_ALGORITHM_STATSORT_HPP
 #define BOOST_ALGORITHM_STATSORT_HPP
 
-#include <boost/sort/spreadsort/spreadsort.hpp>
-
 #include <algorithm>    // std::sort, std::min_element, std::max_element, std::copy
 #include <cmath>        // std::sqrt
 #include <cstddef>      // std::size_t
@@ -73,18 +69,6 @@ namespace boost {
 namespace algorithm {
 
 namespace detail {
-
-// ── Tuneable constants ─────────────────────────────────────────────────────
-
-/// Buckets smaller than this are sorted by insertion sort.
-static constexpr std::size_t STATSORT_THRESHOLD = 1000000;
-
-/// If any single bucket receives more than this fraction of n elements,
-/// the bucket is considered pathologically skewed and falls back to
-/// std::sort.  A value of 0.5 means: if any bucket holds more than half
-/// the input, stop recursing and use std::sort on that bucket.
-static constexpr double STATSORT_IMBALANCE_RATIO = 0.5;
-
 
 // ── Insertion sorts ────────────────────────────────────────────────────────
 
@@ -119,159 +103,113 @@ inline void statsort_insertion_proj(T* data, std::size_t n, Proj proj) noexcept
     }
 }
 
-
 // ── Recursive cores ────────────────────────────────────────────────────────
 
 /// Recursive core for plain arithmetic types.
-///
-/// Imbalance guard: before recursing, this function checks whether any
-/// single bucket has captured an unreasonably large share of n.  If so,
-/// std::sort is invoked on that bucket directly.  This prevents O(n^2)
-/// degradation on adversarial or highly skewed inputs while preserving
-/// the O(n log log n) expected behaviour on smooth distributions.
 template <typename T>
 void statsort_impl(T* data, std::size_t n,
-                   double min_val, double max_val,
+                   double min, double max,
                    T* scratch)
 {
-    if (n <= STATSORT_THRESHOLD) { boost::sort::spreadsort::spreadsort(data, data + n); return; }
+    static constexpr std::size_t THRESHOLD = 16;
+    if (n <= THRESHOLD) { statsort_insertion(data, n); return; }
 
     const std::size_t m     = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
-    const double      range = max_val - min_val;
-    const double      scale = static_cast<double>(static_cast<std::size_t>(m)) / range;
+    const double      scale = static_cast<double>(m) / (max - min);
 
-    // Pass 1 — count elements per bucket
     std::vector<std::size_t> cnt(m, 0);
     for (std::size_t i = 0; i < n; ++i) {
-        std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min_val) * scale);
+        std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min) * scale);
         if (b >= m) b = m - 1;
         ++cnt[b];
     }
 
-    // Imbalance check — if the heaviest bucket holds > IMBALANCE_RATIO of n,
-    // fall back to std::sort for the whole subrange.
-    {
-        const std::size_t max_allowed =
-            static_cast<std::size_t>(STATSORT_IMBALANCE_RATIO * static_cast<double>(n)) + 1;
-        for (std::size_t b = 0; b < m; ++b) {
-            if (cnt[b] > max_allowed) {
-                std::sort(data, data + n);
-                return;
-            }
-        }
-    }
-
-    // Pass 2 — prefix sums → bucket start offsets
     std::vector<std::size_t> off(m + 1, 0);
     for (std::size_t i = 0; i < m; ++i)
         off[i + 1] = off[i] + cnt[i];
 
-    // Pass 3 — scatter into scratch
     {
         std::vector<std::size_t> pos(off.begin(), off.begin() + m);
         for (std::size_t i = 0; i < n; ++i) {
-            std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min_val) * scale);
+            std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min) * scale);
             if (b >= m) b = m - 1;
             scratch[pos[b]++] = data[i];
         }
     }
 
-    // Pass 4 — recurse per bucket
     for (std::size_t b = 0; b < m; ++b) {
         const std::size_t bstart = off[b];
         const std::size_t bsize  = cnt[b];
         if (bsize == 0) continue;
-
-        const double bmin = min_val + static_cast<double>(b)     * range / static_cast<double>(m);
-        const double bmax = min_val + static_cast<double>(b + 1) * range / static_cast<double>(m);
-
-        if (bsize <= STATSORT_THRESHOLD)
-            boost::sort::spreadsort::spreadsort(scratch + bstart, scratch + bstart + bsize);
+        const double bmin = min + static_cast<double>(b)     * (max - min) / static_cast<double>(m);
+        const double bmax = min + static_cast<double>(b + 1) * (max - min) / static_cast<double>(m);
+        if (bsize <= THRESHOLD)
+            statsort_insertion(scratch + bstart, bsize);
         else
             statsort_impl(scratch + bstart, bsize, bmin, bmax, data + bstart);
     }
 
-    // Pass 5 — copy back
     std::copy(scratch, scratch + n, data);
 }
 
-
 /// Recursive core for projected (complex object) types.
-///
 /// Bucket placement uses the arithmetic key returned by proj(element).
-/// Includes the same imbalance guard as the plain-type overload.
 ///
 /// @param data     Objects to sort (input/output)
 /// @param n        Number of elements
-/// @param min_val  Lower bound of key range for this subproblem
-/// @param max_val  Upper bound of key range (exclusive)
+/// @param min      Lower bound of key range for this subproblem
+/// @param max      Upper bound of key range (exclusive)
 /// @param scratch  Workspace of size n
 /// @param proj     Callable: (const T&) -> arithmetic key
 template <typename T, typename Proj>
 void statsort_impl_proj(T* data, std::size_t n,
-                        double min_val, double max_val,
+                        double min, double max,
                         T* scratch,
                         Proj proj)
 {
-    if (n <= STATSORT_THRESHOLD) { boost::sort::spreadsort::spreadsort(data, data + n); return; }
+    static constexpr std::size_t THRESHOLD = 16;
+    if (n <= THRESHOLD) { statsort_insertion_proj(data, n, proj); return; }
 
     const std::size_t m     = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
-    const double      range = max_val - min_val;
-    const double      scale = static_cast<double>(m) / range;
+    const double      scale = static_cast<double>(m) / (max - min);
 
-    // Pass 1 — count
+    // Pass 1: count
     std::vector<std::size_t> cnt(m, 0);
     for (std::size_t i = 0; i < n; ++i) {
-        std::size_t b = static_cast<std::size_t>((static_cast<double>(proj(data[i])) - min_val) * scale);
+        std::size_t b = static_cast<std::size_t>((static_cast<double>(proj(data[i])) - min) * scale);
         if (b >= m) b = m - 1;
         ++cnt[b];
     }
 
-    // Imbalance guard — same policy as the plain-type overload
-    {
-        const std::size_t max_allowed =
-            static_cast<std::size_t>(STATSORT_IMBALANCE_RATIO * static_cast<double>(n)) + 1;
-        for (std::size_t b = 0; b < m; ++b) {
-            if (cnt[b] > max_allowed) {
-                std::sort(data, data + n, [&](const T& a, const T& b_elem) {
-                    return proj(a) < proj(b_elem);
-                });
-                return;
-            }
-        }
-    }
-
-    // Pass 2 — prefix sums
+    // Pass 2: prefix sums
     std::vector<std::size_t> off(m + 1, 0);
     for (std::size_t i = 0; i < m; ++i)
         off[i + 1] = off[i] + cnt[i];
 
-    // Pass 3 — scatter
+    // Pass 3: scatter
     {
         std::vector<std::size_t> pos(off.begin(), off.begin() + m);
         for (std::size_t i = 0; i < n; ++i) {
-            std::size_t b = static_cast<std::size_t>((static_cast<double>(proj(data[i])) - min_val) * scale);
+            std::size_t b = static_cast<std::size_t>((static_cast<double>(proj(data[i])) - min) * scale);
             if (b >= m) b = m - 1;
             scratch[pos[b]++] = data[i];
         }
     }
 
-    // Pass 4 — recurse per bucket
+    // Pass 4: recurse per bucket
     for (std::size_t b = 0; b < m; ++b) {
         const std::size_t bstart = off[b];
         const std::size_t bsize  = cnt[b];
         if (bsize == 0) continue;
-
-        const double bmin = min_val + static_cast<double>(b)     * range / static_cast<double>(m);
-        const double bmax = min_val + static_cast<double>(b + 1) * range / static_cast<double>(m);
-
-        if (bsize <= STATSORT_THRESHOLD)
-            boost::sort::spreadsort::spreadsort(scratch + bstart, scratch + bstart + bsize);
+        const double bmin = min + static_cast<double>(b)     * (max - min) / static_cast<double>(m);
+        const double bmax = min + static_cast<double>(b + 1) * (max - min) / static_cast<double>(m);
+        if (bsize <= THRESHOLD)
+            statsort_insertion_proj(scratch + bstart, bsize, proj);
         else
             statsort_impl_proj(scratch + bstart, bsize, bmin, bmax, data + bstart, proj);
     }
 
-    // Pass 5 — copy back
+    // Pass 5: copy back
     std::copy(scratch, scratch + n, data);
 }
 
@@ -285,12 +223,7 @@ void statsort_impl_proj(T* data, std::size_t n,
 /// boost::algorithm::statsort — container overload (arithmetic types)
 ///
 /// Sorts a contiguous container of arithmetic values in ascending order.
-/// Average O(n log log n) on smooth distributions; falls back to O(n log n)
-/// std::sort on pathologically skewed inputs.
-///
-/// @tparam Container  Contiguous container whose value_type is arithmetic
-///                    (e.g. std::vector<double>, std::array<int, N>)
-/// @param  c          Container to sort in-place
+/// Average O(n log log n) on smooth distributions.
 ///
 /// Example:
 ///   std::vector<double> v = {3.1, 1.4, 2.7};
@@ -308,7 +241,7 @@ void statsort(Container& c)
     T* data = c.data();
     T min_val = *std::min_element(data, data + n);
     T max_val = *std::max_element(data, data + n);
-    if (min_val >= max_val) return;  // all elements equal
+    if (min_val >= max_val) return;
 
     const double mind = static_cast<double>(min_val);
     const double maxd = static_cast<double>(max_val)
@@ -322,14 +255,11 @@ void statsort(Container& c)
 /// boost::algorithm::statsort — container overload with projection
 ///
 /// Sorts a contiguous container of objects in ascending order of a numeric
-/// key extracted by a projection function.  The projection must return an
+/// key extracted by a projection function. The projection must return an
 /// arithmetic type (int, float, double, etc.).
 ///
-/// This overload covers the same use case as passing a comparator to
-/// std::sort, but expresses intent more clearly by extracting a key.
-///
-/// Falls back to std::sort (via comparator) on pathologically skewed
-/// key distributions.
+/// This is the overload that allows statsort to work on complex objects,
+/// answering the same use case as passing a comparator to std::sort.
 ///
 /// @tparam Container  Contiguous container (e.g. std::vector<MyStruct>)
 /// @tparam Proj       Callable: (const value_type&) -> arithmetic key,
@@ -368,7 +298,7 @@ void statsort(Container& c, Proj proj)
     Key min_key = std::invoke(proj, *std::min_element(data, data + n, key_cmp));
     Key max_key = std::invoke(proj, *std::max_element(data, data + n, key_cmp));
 
-    if (min_key >= max_key) return;  // all keys equal
+    if (min_key >= max_key) return; // all keys equal
 
     const double mind = static_cast<double>(min_key);
     const double maxd = static_cast<double>(max_key)
@@ -385,13 +315,6 @@ void statsort(Container& c, Proj proj)
 
 
 /// boost::algorithm::statsort — iterator overload (arithmetic types)
-///
-/// Sorts the range [first, last) of arithmetic values in ascending order.
-/// Behaves identically to the container overload.
-///
-/// @tparam RandomIt  Random-access iterator whose value_type is arithmetic
-/// @param  first     Beginning of range
-/// @param  last      One past end of range
 ///
 /// Example:
 ///   std::vector<int> v = {5, 3, 8, 1};
@@ -416,12 +339,6 @@ void statsort(RandomIt first, RandomIt last)
 ///
 /// Sorts the range [first, last) in ascending order of the numeric key
 /// returned by proj.
-///
-/// @tparam RandomIt  Random-access iterator
-/// @tparam Proj      Callable: (const value_type&) -> arithmetic key
-/// @param  first     Beginning of range
-/// @param  last      One past end of range
-/// @param  proj      Key extraction function
 ///
 /// Example:
 ///   struct Item { int id; float score; };

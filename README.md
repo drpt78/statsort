@@ -14,9 +14,9 @@
 
 there is something wrong with Adversarial
 
-## Question for Claude #1
+## Question for Boost Leaders #1
 
-why is he compiling with O3 instead of O2 (Recommended Standard Optimization).
+do you want O2 (Recommended Standard Optimization) compilation or O3 compilation, and if O3 why?
 
 ## Overview & Motivation
 
