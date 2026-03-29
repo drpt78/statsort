@@ -6,14 +6,6 @@
 
 **ORCID:** https://orcid.org/0000-0002-8199-3723
 
-## WARNING #1
-
-there is something wrong with Adversarial
-
-## Question for Boost Leaders #1
-
-do you want O2 (Recommended Standard Optimization) compilation or O3 compilation, and if O3 why?
-
 ## Overview & Motivation
 
 > Peter Taraba, *"Why would you sort when you know where things approximately belong?"*, March 2025.
