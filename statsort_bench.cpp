@@ -110,10 +110,10 @@ void benchmark()
             std::swap(v[swap_idx(rng)], v[swap_idx(rng)]);
           print_row("Nearly sorted" + ns, v); }
 
-        /*{
+        {
            std::vector<double> v(n, 1.0);
-           v.back() = 1e12;   // one extreme outlier
-           print_row("Spike (fallback)" + ns, v); }*/
+           v.back() = 10000000.0;   // one extreme outlier
+           print_row("Spike (fallback)" + ns, v); }
 
         std::cout << "|---|---|---|---|---|---|---|\n";
     }
