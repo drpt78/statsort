@@ -84,7 +84,7 @@ void benchmark()
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x |\n";
     };
 
-    for (std::size_t n : {10000UL, 100000UL, 1000000UL, 10000000UL, 100000000UL}
+    for (std::size_t n : {10000UL, 100000UL}//, 1000000UL, 10000000UL, 100000000UL}
     ) {
         std::mt19937 rng(42);
         std::string ns = " n=" + std::to_string(n);
