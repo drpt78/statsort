@@ -84,7 +84,7 @@ void benchmark()
                   << std::setw(8)  << std::setprecision(2) << t_std/t_stat << "x |\n";
     };
 
-    for (std::size_t n : {10000UL, 100000UL, 1000000UL, 10000000UL, 100000000UL}
+    for (std::size_t n : {10000UL, 100000UL, 1000000UL} //, 10000000UL, 100000000UL}
     ) {
         std::mt19937 rng(42);
         std::string ns = " n=" + std::to_string(n);
@@ -100,6 +100,20 @@ void benchmark()
         { std::exponential_distribution<double> d(0.00001);
           std::vector<double> v(n); std::generate(v.begin(),v.end(),[&]{return d(rng);});
           print_row("Exponential" + ns, v); }
+
+
+        {
+          std::vector<double> v(n);
+          std::iota(v.begin(), v.end(), 0.0);
+          std::uniform_int_distribution<std::size_t> swap_idx(0, n - 1);
+          for (std::size_t k = 0; k < n / 100; ++k)  // 1 % random swaps
+            std::swap(v[swap_idx(rng)], v[swap_idx(rng)]);
+          print_row("Nearly sorted" + ns, v); }
+
+        /*{
+           std::vector<double> v(n, 1.0);
+           v.back() = 1e12;   // one extreme outlier
+           print_row("Spike (fallback)" + ns, v); }*/
 
         std::cout << "|---|---|---|---|---|---|---|\n";
     }
