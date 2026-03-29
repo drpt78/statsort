@@ -9,3 +9,6 @@ echo "------ benchmark -----"
 
 echo "----- test -----"
 ./statsort_test
+
+rm statsort_bench
+rm statsort_test
