@@ -1,57 +1,10 @@
-// boost/algorithm/statsort.hpp
-//
 // Copyright (c) Peter Taraba 2025
 // Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt or copy at
-//  https://www.boost.org/LICENSE_1_0.txt)
-//
-// -----------------------------------------------------------------------------
-// Statistical Sort — O(n log log n) average complexity
-// -----------------------------------------------------------------------------
-//
+
 // ALGORITHM REFERENCE
 //   Peter Taraba, "Why would you sort when you know where things approximately
 //   belong?", March 2025.
-//   https://github.com/peta78/Sorting/tree/main/sorting_publication
-//
-// ALGORITHM SUMMARY
-//   1. Find min and max of the input range — O(n).
-//   2. Classify each element into one of sqrt(n) buckets by linear
-//      interpolation of its value into [min, max] — O(n).
-//   3. Recursively sort each bucket by the same algorithm.
-//   4. Fall back to std::sort when bucket size <= threshold (default: 16).
-//   5. Reassemble buckets in order.
-//
-// REQUIREMENTS
-//   - C++17 or later
-//   - ValueType must be arithmetic (integral or floating-point), OR
-//     a projection function must be supplied mapping each element to an
-//     arithmetic key (see projection overloads below)
-//   - Range must be a contiguous container exposing .data() and .size()
-//
-// SYNOPSIS
-//   // Sort a vector of arithmetic values
-//   std::vector<double> v = { ... };
-//   boost::algorithm::statsort(v);
-//
-//   // Iterator interface
-//   boost::algorithm::statsort(v.begin(), v.end());
-//
-//   // Projection overload — sort complex objects by a numeric key
-//   struct Particle { std::string name; double energy; };
-//   std::vector<Particle> ps = { ... };
-//   boost::algorithm::statsort(ps, [](const Particle& p) { return p.energy; });
-//
-//   // Member pointer syntax also works
-//   struct Point { int x, y; };
-//   std::vector<Point> pts = { ... };
-//   boost::algorithm::statsort(pts, &Point::x);
-//
-//   // Projection with iterator interface
-//   boost::algorithm::statsort(ps.begin(), ps.end(),
-//                              [](const Particle& p) { return p.energy; });
-//
-// -----------------------------------------------------------------------------
+//   https://www.authorea.com/users/495213/articles/1240078-why-would-you-sort-when-you-know-where-things-approximately-belong?commit=06b7d9e465d985698104a8fbfe2535fcf35c1940
 
 #ifndef BOOST_ALGORITHM_STATSORT_HPP
 #define BOOST_ALGORITHM_STATSORT_HPP
@@ -137,12 +90,6 @@ namespace boost {
                     }
                 }
 
-                // Guard: if all elements collapsed into one bucket the value range is too
-                // narrow for interpolation to split them further.  Recurring would produce
-                // the same single-bucket result forever → infinite recursion → stack
-                // overflow.  Fall back to std::sort on the already-scattered scratch buffer
-                // and copy back; this is O(n log n) worst-case but only fires on degenerate
-                // distributions deep in the recursion.
                 {
                     std::size_t nonempty = 0;
                     for (std::size_t i = 0; i < m; ++i) if (cnt[i] > 0) ++nonempty;
