@@ -21,7 +21,7 @@
 
 ## Performance Benchmarks
 
-Run #1 (Manjaro)
+Run #1 (Manjaro KDE)
 
 | Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
 |---|---|---|---|---|---|---|
@@ -71,6 +71,30 @@ Run #2 (Alpine Linux)
 | Exponential n=100000000 | 9996.04 ms |3808.52 ms |**3151.68** ms |3976.97 ms |12324.82 ms |    2.62x |
 |---|---|---|---|---|---|---|
 
+Run #3 (Manjaro XFCE)
+
+| Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
+|---|---|---|---|---|---|---|
+| Uniform    n=10000 | 0.50 ms |0.17 ms |**0.17** ms |0.24 ms |0.53 ms |    2.86x |
+| Gaussian   n=10000 | 0.49 ms |0.17 ms |**0.16** ms |0.25 ms |0.52 ms |    2.85x |
+| Exponential n=10000 | 0.50 ms |0.18 ms |**0.18** ms |0.24 ms |0.52 ms |    2.74x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000 | 6.16 ms |**2.22** ms |2.47 ms |2.81 ms |6.87 ms |    2.78x |
+| Gaussian   n=100000 | 6.14 ms |**2.26** ms |2.44 ms |2.85 ms |6.86 ms |    2.72x |
+| Exponential n=100000 | 6.21 ms |2.58 ms |**2.40** ms |2.78 ms |6.86 ms |    2.41x |
+|---|---|---|---|---|---|---|
+| Uniform    n=1000000 | 73.31 ms |**27.28** ms |30.08 ms |32.02 ms |87.85 ms |    2.69x |
+| Gaussian   n=1000000 | 73.57 ms |**26.98** ms |31.24 ms |31.99 ms |87.53 ms |    2.73x |
+| Exponential n=1000000 | 74.15 ms |**27.76** ms |28.46 ms |31.91 ms |87.58 ms |    2.67x |
+|---|---|---|---|---|---|---|
+| Uniform    n=10000000 | 864.53 ms |300.58 ms |**252.66** ms |362.01 ms |1050.54 ms |    2.88x |
+| Gaussian   n=10000000 | 868.45 ms |**310.24** ms |352.57 ms |365.32 ms |1087.64 ms |    2.80x |
+| Exponential n=10000000 | 868.83 ms |293.95 ms |**244.58** ms |362.73 ms |1090.34 ms |    2.96x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000000 | 10024.20 ms |3591.31 ms |**3415.93** ms |4001.33 ms |12218.84 ms |    2.79x |
+| Gaussian   n=100000000 | 9863.21 ms |3460.79 ms |**3324.23** ms |3979.62 ms |12239.44 ms |    2.85x |
+| Exponential n=100000000 | 9873.33 ms |3452.54 ms |**3095.25** ms |3954.24 ms |12334.34 ms |    2.86x |
+|---|---|---|---|---|---|---|
 
 
 ## Implementation Notes
