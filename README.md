@@ -21,8 +21,6 @@
 
 ## Performance Benchmarks
 
-Benchmarks were run on GCC -O2!!!, x86-64 Linux, comparing `statsort` against `std::sort`.
-
 Run #1 (Manjaro)
 
 | Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
