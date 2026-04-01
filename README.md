@@ -23,7 +23,7 @@
 
 Benchmarks were run on GCC -O2!!!, x86-64 Linux, comparing `statsort` against `std::sort`.
 
-Run #1
+Run #1 (Manjaro)
 
 | Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
 |---|---|---|---|---|---|---|
@@ -48,6 +48,30 @@ Run #1
 | Exponential n=100000000 | 9948.71 ms |3382.96 ms |**3059.96** ms |3909.26 ms |12226.33 ms |    2.94x |
 |---|---|---|---|---|---|---|
 
+Run #2 (Alpine Linux)
+
+| Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
+|---|---|---|---|---|---|---|
+| Uniform    n=10000 | 0.50 ms |0.21 ms |**0.20** ms |0.24 ms |0.53 ms |    2.39x |
+| Gaussian   n=10000 | 0.51 ms |0.24 ms |**0.18** ms |0.24 ms |0.53 ms |    2.14x |
+| Exponential n=10000 | 0.51 ms |0.25 ms |**0.18** ms |0.24 ms |0.53 ms |    1.99x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000 | 6.28 ms |2.72 ms |**2.50** ms |2.83 ms |6.92 ms |    2.31x |
+| Gaussian   n=100000 | 6.28 ms |2.92 ms |**2.46** ms |2.82 ms |6.94 ms |    2.15x |
+| Exponential n=100000 | 6.33 ms |2.73 ms |**2.41** ms |2.80 ms |6.95 ms |    2.31x |
+|---|---|---|---|---|---|---|
+| Uniform    n=1000000 | 74.95 ms |31.56 ms |**29.56** ms |31.81 ms |88.24 ms |    2.37x |
+| Gaussian   n=1000000 | 75.35 ms |31.97 ms |**31.79** ms |31.92 ms |88.59 ms |    2.36x |
+| Exponential n=1000000 | 75.29 ms |30.89 ms |**28.94** ms |31.86 ms |87.38 ms |    2.44x |
+|---|---|---|---|---|---|---|
+| Uniform    n=10000000 | 876.23 ms |327.53 ms |**254.56** ms |359.97 ms |1058.44 ms |    2.68x |
+| Gaussian   n=10000000 | 874.03 ms |**300.72** ms |336.19 ms |355.76 ms |1061.82 ms |    2.91x |
+| Exponential n=10000000 | 872.06 ms |311.08 ms |**243.10** ms |359.19 ms |1076.37 ms |    2.80x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000000 | 10067.15 ms |**3356.90** ms |3423.24 ms |4052.16 ms |12354.46 ms |    3.00x |
+| Gaussian   n=100000000 | 10029.56 ms |3589.33 ms |**3302.30** ms |3961.61 ms |12421.55 ms |    2.79x |
+| Exponential n=100000000 | 9996.04 ms |3808.52 ms |**3151.68** ms |3976.97 ms |12324.82 ms |    2.62x |
+|---|---|---|---|---|---|---|
 
 
 
