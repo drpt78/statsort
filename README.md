@@ -109,10 +109,14 @@ Run #3 (Manjaro XFCE)
 
 ## Consider feedback:
 
-One thing I think is great about boost::sort is the multi-threading.  For some workloads sorting can definitely be a bottleneck and throwing more cores at that is beneficial.  In rendering for example, knowing the order of things towards or away from the current viewpoint, can be useful.  It does seem like this algorithm is amenable to multi-threading, and think would be a requirement for production use.
-
-If I had a precomputed bucket per item, that would likely fit into a 16-bit unsigned integer.  And if evaluating that is costly, or not all the items are changing, would be an additional performance advantage.  So consider a variant of statsort accepting a seperate array of buckets, rather than always "lazily" evaluated.  One other advantage of decoupling the bucket evaluation is that non-uniform distributions can be dealt with as a seperate concern.  (Such as percentile via CDF by some good enough method)
-
+### High Priority
 I'm curious to know if sqrt(n) buckets is somehow optimal, or if the performance has been evaluated for other powers such as 0.4 or 0.6?  One reason I'm curious is if 5 billion items works fine for 16-bit bucket index, to spare the memory expense of 32-bit bucket index.
 
+### Lower Priority
+One thing I think is great about boost::sort is the multi-threading.  For some workloads sorting can definitely be a bottleneck and throwing more cores at that is beneficial.  In rendering for example, knowing the order of things towards or away from the current viewpoint, can be useful.  It does seem like this algorithm is amenable to multi-threading, and think would be a requirement for production use.
+
+### Unknown Priority
+If I had a precomputed bucket per item, that would likely fit into a 16-bit unsigned integer.  And if evaluating that is costly, or not all the items are changing, would be an additional performance advantage.  So consider a variant of statsort accepting a seperate array of buckets, rather than always "lazily" evaluated.  One other advantage of decoupling the bucket evaluation is that non-uniform distributions can be dealt with as a seperate concern.  (Such as percentile via CDF by some good enough method)
+
+### Unknown Priority
 One code suggestion is to nest statsort namespace inside detail, rather than prefixing the function names there.
