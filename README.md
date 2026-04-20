@@ -1,10 +1,4 @@
-# Boost Vault Submission: `boost::sort::statsort`
-
-**Author:** Peter Taraba & Claude AI (Claude AI is a messy boy)
-
-**Date:** March 2026
-
-**ORCID:** https://orcid.org/0000-0002-8199-3723
+# statsort`
 
 ## Overview & Motivation
 
@@ -15,8 +9,8 @@
 
 | Case                           | Time Complexity       | Space Complexity |
 |--------------------------------|-----------------------|------------------|
-| Average (smooth distributions) | O(n log log n)        | O(√n)            |
-| Worst case (adversarial input) | O(n log n) (fallback) | O(log n)         |
+| Average (smooth distributions) | O(n log log n)        | ?            |
+| Worst case (adversarial input) | O(n log n) (fallback) | ?         |
 
 
 ## Performance Benchmarks
@@ -95,15 +89,6 @@ Run #3 (Manjaro XFCE)
 | Gaussian   n=100000000 | 9863.21 ms |3460.79 ms |**3324.23** ms |3979.62 ms |12239.44 ms |    2.85x |
 | Exponential n=100000000 | 9873.33 ms |3452.54 ms |**3095.25** ms |3954.24 ms |12334.34 ms |    2.86x |
 |---|---|---|---|---|---|---|
-
-
-## Implementation Notes
-
-- **Header-only**, C++17
-- Supports any `std::is_arithmetic<T>` type (`int`, `float`, `double`, etc.)
-- No external dependencies beyond the C++ standard library
-- Compatible with the Boost.Sort library structure
-
 
 # To Do
 
