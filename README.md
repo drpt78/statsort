@@ -1,4 +1,4 @@
-# statsort (statistical sorting)
+# statsort (statistical [sorting](https://faculty.kfupm.edu.sa/phys/aanaqvi/Numerical%20Recipes-The%20Art%20of%20Scientific%20Computing%203rd%20Edition%20(Press%20et%20al).pdf))
 
 ## Overview & Motivation
 
