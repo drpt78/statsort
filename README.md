@@ -1,4 +1,4 @@
-# statsort (statistical [sorting](https://en.wikipedia.org/wiki/Sorting_algorithm))
+# statsort (statistical sorting)
 
 ## Overview & Motivation
 
