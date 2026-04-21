@@ -7,10 +7,9 @@
 
 ### Complexity summary
 
-| Case                           | Time Complexity       | Space Complexity |
-|--------------------------------|-----------------------|------------------|
-| Average (smooth distributions) | O(n log log n)        | ?            |
-| Worst case (adversarial input) | O(n log n) (fallback) | ?         |
+| Case                           | Time Complexity       |
+|--------------------------------|-----------------------|
+| Average (smooth distributions) | O(n log log n)        |
 
 
 ## Performance Benchmarks
