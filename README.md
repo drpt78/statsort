@@ -91,7 +91,7 @@ Run #3 (Manjaro XFCE)
 
 # To Do
 
-## Consider feedback:
+## Consider feedback from C++ Boost Community:
 
 ### High Priority
 I'm curious to know if sqrt(n) buckets is somehow optimal, or if the performance has been evaluated for other powers such as 0.4 or 0.6?  One reason I'm curious is if 5 billion items works fine for 16-bit bucket index, to spare the memory expense of 32-bit bucket index.
