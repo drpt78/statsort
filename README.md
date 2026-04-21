@@ -1,4 +1,4 @@
-# statsort`
+# statsort (statistical [sorting](https://en.wikipedia.org/wiki/Sorting_algorithm))
 
 ## Overview & Motivation
 
