@@ -38,3 +38,28 @@ Run #1 (Manjaro Linux x86_64 with Kernel: 7.0.3-1-MANJARO on AMD Ryzen 5 7520U w
 | Gaussian   n=100000000 | 9760.81 ms |**3069.10** ms |3254.75 ms |3919.40 ms |12173.78 ms |    3.18x |
 | Exponential n=100000000 | 9923.21 ms |3289.10 ms |**3118.75** ms |3930.38 ms |12357.87 ms |    3.02x |
 |---|---|---|---|---|---|---|
+
+Run #2 (Manjaro Linux x86_64 with Kernel: 7.0.3-1-MANJARO on AMD Ryzen 5 7520U with Radeon Graphics (8) @ 4.386GHz)
+| Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
+|---|---|---|---|---|---|---|
+| Uniform    n=10000 | 0.52 ms |**0.16** ms |0.17 ms |0.24 ms |0.55 ms |    3.21x |
+| Gaussian   n=10000 | 0.51 ms |0.17 ms |**0.16** ms |0.24 ms |0.53 ms |    2.91x |
+| Exponential n=10000 | 0.50 ms |0.18 ms |**0.17** ms |0.24 ms |0.52 ms |    2.76x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000 | 6.19 ms |**2.29** ms |2.46 ms |2.82 ms |6.93 ms |    2.71x |
+| Gaussian   n=100000 | 6.24 ms |**2.34** ms |2.48 ms |2.84 ms |6.91 ms |    2.67x |
+| Exponential n=100000 | 6.29 ms |**2.36** ms |2.41 ms |2.81 ms |6.93 ms |    2.67x |
+|---|---|---|---|---|---|---|
+| Uniform    n=1000000 | 74.11 ms |**27.01** ms |29.85 ms |32.03 ms |88.93 ms |    2.74x |
+| Gaussian   n=1000000 | 74.82 ms |**27.91** ms |31.41 ms |32.14 ms |89.87 ms |    2.68x |
+| Exponential n=1000000 | 75.17 ms |**30.91** ms |30.99 ms |35.70 ms |92.65 ms |    2.43x |
+|---|---|---|---|---|---|---|
+| Uniform    n=10000000 | 917.53 ms |435.44 ms |**283.81** ms |383.96 ms |1159.90 ms |    2.11x |
+| Gaussian   n=10000000 | 887.30 ms |**316.18** ms |351.12 ms |369.79 ms |1084.51 ms |    2.81x |
+| Exponential n=10000000 | 882.31 ms |307.86 ms |**242.99** ms |368.62 ms |1091.94 ms |    2.87x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000000 | 9872.96 ms |**3334.85** ms |3451.51 ms |4117.32 ms |12858.83 ms |    2.96x |
+| Gaussian   n=100000000 | 10031.09 ms |**3423.14** ms |3432.43 ms |4112.34 ms |12840.32 ms |    2.93x |
+| Exponential n=100000000 | 9904.42 ms |3304.56 ms |**3088.08** ms |3953.38 ms |12239.02 ms |    3.00x |
+|---|---|---|---|---|---|---|
+
