@@ -63,3 +63,26 @@ Run #2 (Manjaro Linux x86_64 with Kernel: 7.0.3-1-MANJARO on AMD Ryzen 5 7520U w
 | Exponential n=100000000 | 9904.42 ms |3304.56 ms |**3088.08** ms |3953.38 ms |12239.02 ms |    3.00x |
 |---|---|---|---|---|---|---|
 
+Run #3 (Manjaro Linux x86_64 with Kernel: 7.0.3-1-MANJARO on AMD Ryzen 5 7520U with Radeon Graphics (8) @ 4.386GHz)
+| Distribution / N | std::sort  | statsort  | spreadsort   | pdqsort| flat_stable_sort| speedup | 
+|---|---|---|---|---|---|---|
+| Uniform    n=10000 | 0.50 ms |**0.17** ms |0.17 ms |0.24 ms |0.53 ms |    2.92x |
+| Gaussian   n=10000 | 0.51 ms |0.19 ms |**0.16** ms |0.24 ms |0.52 ms |    2.63x |
+| Exponential n=10000 | 0.50 ms |0.18 ms |**0.17** ms |0.24 ms |0.52 ms |    2.80x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000 | 6.18 ms |**2.20** ms |2.46 ms |2.80 ms |6.93 ms |    2.80x |
+| Gaussian   n=100000 | 6.16 ms |**2.20** ms |2.44 ms |2.82 ms |6.85 ms |    2.80x |
+| Exponential n=100000 | 6.24 ms |**2.28** ms |2.41 ms |2.78 ms |6.83 ms |    2.74x |
+|---|---|---|---|---|---|---|
+| Uniform    n=1000000 | 73.47 ms |**27.73** ms |29.38 ms |31.78 ms |87.48 ms |    2.65x |
+| Gaussian   n=1000000 | 73.89 ms |**27.21** ms |32.09 ms |31.79 ms |87.46 ms |    2.72x |
+| Exponential n=1000000 | 74.22 ms |**27.85** ms |28.95 ms |31.96 ms |87.43 ms |    2.67x |
+|---|---|---|---|---|---|---|
+| Uniform    n=10000000 | 862.34 ms |288.17 ms |**251.31** ms |359.96 ms |1061.37 ms |    2.99x |
+| Gaussian   n=10000000 | 860.18 ms |**280.20** ms |335.65 ms |357.10 ms |1044.40 ms |    3.07x |
+| Exponential n=10000000 | 861.91 ms |290.25 ms |**238.69** ms |359.06 ms |1048.28 ms |    2.97x |
+|---|---|---|---|---|---|---|
+| Uniform    n=100000000 | 9800.29 ms |**3048.52** ms |3363.28 ms |3972.48 ms |12192.66 ms |    3.21x |
+| Gaussian   n=100000000 | 9745.72 ms |**3180.52** ms |3254.87 ms |3921.28 ms |12186.48 ms |    3.06x |
+| Exponential n=100000000 | 9807.01 ms |3246.50 ms |**3087.97** ms |3955.70 ms |12535.99 ms |    3.02x |
+
