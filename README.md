@@ -86,3 +86,4 @@ Run #3 (Manjaro Linux x86_64 with Kernel: 7.0.3-1-MANJARO on AMD Ryzen 5 7520U w
 | Gaussian   n=100000000 | 9745.72 ms |**3180.52** ms |3254.87 ms |3921.28 ms |12186.48 ms |    3.06x |
 | Exponential n=100000000 | 9807.01 ms |3246.50 ms |**3087.97** ms |3955.70 ms |12535.99 ms |    3.02x |
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/drpt78/statsort)
