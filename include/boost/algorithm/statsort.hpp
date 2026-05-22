@@ -70,29 +70,30 @@ namespace boost {
                 const std::size_t m     = static_cast<std::size_t>(std::sqrt(static_cast<double>(n)));
                 const double      scale = static_cast<double>(m) / (max - min);
 
-                std::vector<std::size_t> cnt(m, 0);
+                std::vector<std::size_t> off(m + 1, 0);
                 for (std::size_t i = 0; i < n; ++i) {
                     std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min) * scale);
-                    if (b >= m) b = m - 1;
-                    ++cnt[b];
+                    ++off[std::min(b, m - 1)];
                 }
 
-                std::vector<std::size_t> off(m + 1, 0);
-                for (std::size_t i = 0; i < m; ++i)
-                    off[i + 1] = off[i] + cnt[i];
+                std::size_t offset = 0;
+                for (std::size_t i = 0; i <= m; ++i) {
+                    auto count = off[i];
+                    off[i] = offset;
+                    offset += count;
+                }
 
                 {
-                    std::vector<std::size_t> pos(off.begin(), off.begin() + m);
+                    std::vector<std::size_t> pos = off;
                     for (std::size_t i = 0; i < n; ++i) {
                         std::size_t b = static_cast<std::size_t>((static_cast<double>(data[i]) - min) * scale);
-                        if (b >= m) b = m - 1;
-                        scratch[pos[b]++] = data[i];
+                        scratch[pos[std::min(b, m - 1)]++] = data[i];
                     }
                 }
 
                 {
                     std::size_t nonempty = 0;
-                    for (std::size_t i = 0; i < m; ++i) if (cnt[i] > 0) ++nonempty;
+                    for (std::size_t i = 0; i < m; ++i) if (off[i] != off[i+1]) ++nonempty;
                     if (nonempty == 1) {
                         std::sort(scratch, scratch + n);
                         std::copy(scratch, scratch + n, data);
@@ -102,7 +103,7 @@ namespace boost {
 
                 for (std::size_t b = 0; b < m; ++b) {
                     const std::size_t bstart = off[b];
-                    const std::size_t bsize  = cnt[b];
+                    const std::size_t bsize  = off[b+1] - bstart;
                     if (bsize == 0) continue;
                     const double bmin = min + static_cast<double>(b)     * (max - min) / static_cast<double>(m);
                     const double bmax = min + static_cast<double>(b + 1) * (max - min) / static_cast<double>(m);
