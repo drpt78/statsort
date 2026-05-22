@@ -211,20 +211,7 @@ namespace boost {
         >
         void statsort(Container& c)
         {
-            const std::size_t n = c.size();
-            if (n <= 1) return;
-
-            T* data = c.data();
-            T min_val = *std::min_element(data, data + n);
-            T max_val = *std::max_element(data, data + n);
-            if (min_val >= max_val) return;
-
-            const double mind = static_cast<double>(min_val);
-            const double maxd = static_cast<double>(max_val)
-            + 0.0001 * (static_cast<double>(max_val) - mind);
-
-            std::vector<T> scratch(n);
-            detail::statsort_impl(data, n, mind, maxd, scratch.data());
+            statsort(c.begin(), c.end());
         }
 
 
@@ -305,9 +292,15 @@ namespace boost {
             const std::size_t n = static_cast<std::size_t>(std::distance(first, last));
             if (n <= 1) return;
 
-            std::vector<T> tmp(first, last);
-            statsort(tmp);
-            std::copy(tmp.begin(), tmp.end(), first);
+            T min_val = *std::min_element(first, last);
+            T max_val = *std::max_element(first, last);
+            if (min_val >= max_val) return;
+
+            const double mind = static_cast<double>(min_val);
+            const double maxd = static_cast<double>(max_val) + 0.0001 * (static_cast<double>(max_val) - mind);
+
+            std::vector<T> scratch(n);
+            detail::statsort_impl(&(*first), n, mind, maxd, scratch.data());
         }
 
 
